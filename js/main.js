@@ -60,18 +60,26 @@ function inicializarDadosEstruturais() {
         });
     }
 
-    // 1.5 Popular Lista de Bônus no Modal
+    // 1.5 Popular Lista de Bônus no Modal (Design Executivo)
     const bonusListContainer = document.getElementById('bonusListRenderer');
     if(bonusListContainer) {
         bonusListContainer.innerHTML = '';
         CONFIG.bonus.forEach(bonus => {
             const div = document.createElement('div');
-            div.className = `bonus-item ${bonus.gratis ? 'free' : ''}`;
+            div.className = 'bonus-item';
             
+            const badgeClass = bonus.gratis ? (bonus.strike ? 'badge-courtesy' : 'badge-included') : 'badge-optional';
+            const iconClass = bonus.gratis ? 'fa-check-circle' : 'fa-info-circle';
             let strikeHtml = bonus.strike ? `<span class="strike">${bonus.strike}</span> ` : '';
+            
             div.innerHTML = `
-                <span><i class="fas fa-check"></i> ${bonus.titulo}</span>
-                <span>${strikeHtml}${bonus.subtitulo}</span>
+                <div class="bonus-item-title">
+                    <i class="fas ${iconClass}"></i>
+                    <span>${bonus.titulo}</span>
+                </div>
+                <div class="bonus-item-status">
+                    ${strikeHtml}<span class="bonus-badge ${badgeClass}">${bonus.subtitulo}</span>
+                </div>
             `;
             bonusListContainer.appendChild(div);
         });
@@ -107,22 +115,22 @@ function calcular() {
     // Atualiza o subtítulo do modal com o que está incluso
     const modalSubtitle = document.getElementById('modalSubtitle');
     if(modalSubtitle) {
-        modalSubtitle.innerText = `✔ ${modeloDescricao}`;
+        modalSubtitle.innerText = modeloDescricao;
     }
 
     // Seta visualmente no modal
     document.getElementById('valorFinal').innerText = valorFormatado;
 
     // Gerar Link do WhatsApp
-    const textoZap = `Olá, Tecnopisos! Fiz uma simulação no site:\n\n` +
+    const textoZap = `Olá, Karina! Fiz uma simulação no simulador da Tecnopisos:\n\n` +
         `📐 *Metragem:* ${metragem}m²\n` +
-        `🪵 *Serviço:* ${modeloNome}\n` +
-        `📋 *Incluso:* ${modeloDescricao}\n` +
-        `💰 *Valor Estimado:* ${valorFormatado}\n\n` +
+        `🪵 *Piso Selecionado:* ${modeloNome}\n` +
+        `📋 *Escopo:* ${modeloDescricao}\n` +
+        `💰 *Investimento Estimado:* ${valorFormatado}\n\n` +
         `ℹ️ *Local Atual:*\n` +
         `- Piso: ${pisoAtualNome}\n` +
         `- Nivelamento: ${nivelamentoNome}\n\n` +
-        `Gostaria de confirmar o orçamento e agendar a visita com a Karina!`;
+        `Gostaria de confirmar essa condição e agendar a visita técnica de cortesia!`;
 
     const link = `https://wa.me/${CONFIG.empresa.whatsapp}?text=${encodeURIComponent(textoZap)}`;
     document.getElementById('linkZap').href = link;
