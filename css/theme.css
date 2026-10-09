@@ -1,9 +1,9 @@
-﻿/* Cores da Marca — Tecnopisos */
+/* Cores da Marca — Tecnopisos */
 :root {
-    /* Cores Principais */
-    --primary: #E67E22;      /* Laranja/âmbar — destaque da marca */
-    --secondary: #1C2B3A;    /* Azul escuro profundo */
-    --accent: #25D366;       /* WhatsApp green */
+    /* Cores Principais — Identidade Neutra & Alto Padrão (Sem laranja) */
+    --primary: #C5A880;      /* Champagne / Titânio nobre — sofisticação e alto padrão */
+    --secondary: #121212;    /* Preto profundo / Grafite escuro */
+    --accent: #25D366;       /* Verde oficial WhatsApp */
     --white: #ffffff;
 
     /* Imagem de Fundo da Seção Hero */
