@@ -46,7 +46,7 @@ const CONFIG = {
         { titulo: "Cola Especial de Fixação (Pacote Vinílico)", subtitulo: "INCLUSO", strike: "", gratis: true },
         { titulo: "Garantia de Instalação de 1 Ano", subtitulo: "INCLUSO", strike: "", gratis: true },
         { titulo: "Visita Técnica e Medição (até 30km)", subtitulo: "CORTESIA*", strike: "R$ 150", gratis: true },
-        { titulo: "Facilidades: até 20x no Cartão / 48x Santander", subtitulo: "DISPONÍVEL", strike: "", gratis: true },
+        { titulo: "Facilidades: até 20x no Cartão • 5% à vista", subtitulo: "DISPONÍVEL", strike: "", gratis: true },
         { titulo: "Rodapé", subtitulo: "Opcional / Sob Consulta", strike: "", gratis: false }
     ]
 };

@@ -122,7 +122,7 @@ function calcular() {
     document.getElementById('valorFinal').innerText = valorFormatado;
 
     // Gerar Link do WhatsApp
-    const textoZap = `Olá, Karina! Fiz uma simulação no simulador da Tecnopisos:\n\n` +
+    const textoZap = `Olá! Fiz uma simulação de orçamento na Tecnopisos:\n\n` +
         `📐 *Metragem:* ${metragem}m²\n` +
         `🪵 *Piso Selecionado:* ${modeloNome}\n` +
         `📋 *Escopo:* ${modeloDescricao}\n` +
