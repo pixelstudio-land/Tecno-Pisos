@@ -16,7 +16,8 @@ const CONFIG = {
         {
             categoria: "Piso Vinílico de Alto Padrão",
             nome: "Vinílico Ruffino Sofisticato",
-            preco: 189.90,
+            preco: 170.00,
+            sobConsulta: false,
             // Incluso: piso + massa de nivelamento + cola especial + mão de obra especializada
             // NÃO inclui rodapé | NÃO se aplica a térreo
             descricao: "Pacote Completo: Piso Ruffino Sofisticato + Nivelamento + Cola + Mão de Obra Própria Especializada. (Sem rodapé | Não aplicável em pavimento térreo)."
@@ -24,7 +25,8 @@ const CONFIG = {
         {
             categoria: "Piso Laminado Premium",
             nome: "Laminado Eucafloor Prime",
-            preco: 139.90,
+            preco: null,
+            sobConsulta: true,
             // Incluso: piso + mão de obra especializada
             descricao: "Pacote Completo: Piso Eucafloor Prime + Manta + Acabamentos + Mão de Obra Própria Especializada."
         }

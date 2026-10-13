@@ -51,8 +51,19 @@ function inicializarDadosEstruturais() {
             const pisosDaCategoria = CONFIG.pisos.filter(p => p.categoria === cat);
             pisosDaCategoria.forEach(piso => {
                 const tempOption = document.createElement('option');
-                tempOption.value = JSON.stringify({ preco: piso.preco, descricao: piso.descricao, nome: piso.nome });
-                tempOption.innerText = `${piso.nome} — R$ ${piso.preco.toFixed(2).replace('.', ',')}/m²`;
+                const isSobConsulta = piso.sobConsulta || piso.preco === null;
+                tempOption.value = JSON.stringify({ 
+                    preco: piso.preco, 
+                    descricao: piso.descricao, 
+                    nome: piso.nome,
+                    sobConsulta: isSobConsulta
+                });
+                
+                if (isSobConsulta) {
+                    tempOption.innerText = `${piso.nome} — Sob Consulta (Solicite o Valor)`;
+                } else {
+                    tempOption.innerText = `${piso.nome} — R$ ${piso.preco.toFixed(2).replace('.', ',')}/m²`;
+                }
                 optgroup.appendChild(tempOption);
             });
             
@@ -109,8 +120,57 @@ function calcular() {
     }
 
     // Lógica de Preço
-    let total = metragem * modeloPreco;
-    const valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const isSobConsulta = modeloData.sobConsulta || modeloData.preco === null || modeloData.preco === undefined;
+    const totalLabel = document.querySelector('.total-label');
+    const valorFinal = document.getElementById('valorFinal');
+    const linkZap = document.getElementById('linkZap');
+    const btnSpan = linkZap ? linkZap.querySelector('span') : null;
+
+    let valorFormatado = "";
+    let textoZap = "";
+    let total = 0;
+
+    if (isSobConsulta) {
+        valorFormatado = "SOB CONSULTA";
+        if (totalLabel) totalLabel.innerText = "Condição do Pacote";
+        if (valorFinal) {
+            valorFinal.innerHTML = `<span style="font-size: 1.85rem; font-weight: 800; letter-spacing: 0.5px; color: #F1F5F9;">SOB CONSULTA</span>`;
+        }
+        if (btnSpan) {
+            btnSpan.innerText = "SOLICITAR VALOR DESSE PACOTE NO WHATSAPP";
+        }
+
+        textoZap = `Olá! Fiz uma simulação de orçamento na Tecnopisos e gostaria de solicitar o valor deste pacote:\n\n` +
+            `📐 *Metragem:* ${metragem}m²\n` +
+            `🪵 *Piso Selecionado:* ${modeloNome}\n` +
+            `📋 *Escopo:* ${modeloDescricao}\n` +
+            `💰 *Investimento:* Sob Consulta (Solicitação de Proposta Especial)\n\n` +
+            `ℹ️ *Local Atual:*\n` +
+            `- Piso: ${pisoAtualNome}\n` +
+            `- Nivelamento: ${nivelamentoNome}\n\n` +
+            `Gostaria de receber a cotação desse pacote e agendar a visita técnica de cortesia!`;
+    } else {
+        total = metragem * modeloPreco;
+        valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
+        if (totalLabel) totalLabel.innerText = "Investimento Total Estimado";
+        if (valorFinal) {
+            valorFinal.innerText = valorFormatado;
+        }
+        if (btnSpan) {
+            btnSpan.innerText = "CONFIRMAR ORÇAMENTO NO WHATSAPP";
+        }
+
+        textoZap = `Olá! Fiz uma simulação de orçamento na Tecnopisos:\n\n` +
+            `📐 *Metragem:* ${metragem}m²\n` +
+            `🪵 *Piso Selecionado:* ${modeloNome}\n` +
+            `📋 *Escopo:* ${modeloDescricao}\n` +
+            `💰 *Investimento Estimado:* ${valorFormatado}\n\n` +
+            `ℹ️ *Local Atual:*\n` +
+            `- Piso: ${pisoAtualNome}\n` +
+            `- Nivelamento: ${nivelamentoNome}\n\n` +
+            `Gostaria de confirmar essa condição e agendar a visita técnica de cortesia!`;
+    }
     
     // Atualiza o subtítulo do modal com o que está incluso
     const modalSubtitle = document.getElementById('modalSubtitle');
@@ -118,22 +178,8 @@ function calcular() {
         modalSubtitle.innerText = modeloDescricao;
     }
 
-    // Seta visualmente no modal
-    document.getElementById('valorFinal').innerText = valorFormatado;
-
-    // Gerar Link do WhatsApp
-    const textoZap = `Olá! Fiz uma simulação de orçamento na Tecnopisos:\n\n` +
-        `📐 *Metragem:* ${metragem}m²\n` +
-        `🪵 *Piso Selecionado:* ${modeloNome}\n` +
-        `📋 *Escopo:* ${modeloDescricao}\n` +
-        `💰 *Investimento Estimado:* ${valorFormatado}\n\n` +
-        `ℹ️ *Local Atual:*\n` +
-        `- Piso: ${pisoAtualNome}\n` +
-        `- Nivelamento: ${nivelamentoNome}\n\n` +
-        `Gostaria de confirmar essa condição e agendar a visita técnica de cortesia!`;
-
     const link = `https://wa.me/${CONFIG.empresa.whatsapp}?text=${encodeURIComponent(textoZap)}`;
-    document.getElementById('linkZap').href = link;
+    if (linkZap) linkZap.href = link;
     
     // Abre modal
     document.getElementById('modalResult').style.display = 'flex';
